@@ -13,7 +13,15 @@ if (!instance.isUseSecurity()) {
     hudsonRealm.createAccount('{{ jenkins_admin_username }}', '{{ jenkins_admin_password }}')
     instance.setSecurityRealm(hudsonRealm)
 
+
     def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
     instance.setAuthorizationStrategy(strategy)
     instance.save()
+}
+
+Thread.start {
+    sleep 10000
+    println "--> setting agent port for jnlp"
+    Jenkins.instance.setSlaveAgentPort({{ jenkins_jnlp_port }})
+    println "--> setting agent port for jnlp... done"
 }
